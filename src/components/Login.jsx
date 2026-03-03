@@ -18,7 +18,8 @@ const Login = ({ onLogin }) => {
             onLogin(student);
         } catch (error) {
             console.error("Login failed:", error);
-            setMsg("Something is wrong. Have the teacher check id/password.");
+            //setMsg("Something is wrong. Have the teacher check id/password.");
+            setMsg(error?.message || "Login failed");
         }
     }
 
