@@ -1,35 +1,23 @@
 import { useState } from "react";
 import Login from "./components/Login.jsx";
-import TestFirebase from "./TestFirebase";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+function StudentHome ({ student }) {
   return (
-    <>
-      <Login />
-
-      <div>
-        <a href="https://vite.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-
-      <h1>Vite + React</h1>
-
-      <div className="card">
-        <button onClick={() => setCount((c) => c + 1)}>count is {count}</button>
-      </div>
-
-      <TestFirebase />
-    </>
+    <div style={{ padding: 24, color: "white" }}>
+      <h1>Welcome, {student.name}!</h1>
+      <p>Your ID: {student.id}</p>
+      <p>Your Grade: {student.grade}</p>
+    </div>
   );
 }
 
-export default App;
+export default function App() {
+  const [student, setStudent] = useState(null);
+  
+  return student ? (
+    <StudentHome student={student} />
+  ) : (
+    <Login setStudent={setStudent} />
+  );
+}
