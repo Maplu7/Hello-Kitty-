@@ -4,7 +4,7 @@ import { FaUser, FaLock } from "react-icons/fa";
 
 const Login = () => {
     return (
-        <div className='wrapper'>
+        <div className='wrapper login-bg'>
             <form action="">
                 <h1>Login</h1>
                 <div className="input-box">
@@ -16,7 +16,7 @@ const Login = () => {
                     <FaLock className='icon' />
                 </div>
 
-                <button type="submit">Let's Play!</button>
+                <button type="submit">LET'S PLAY!</button>
             </form>
         </div>
     )
