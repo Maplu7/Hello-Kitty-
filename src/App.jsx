@@ -1,34 +1,40 @@
+// src/App.jsx
 import { useState } from "react";
 import Login from "./components/Login.jsx";
 import Welcome from "./components/Welcome.jsx";
+import GamePage from "./GamePage.jsx";
 import "./App.css";
-/*
-function StudentHome ({ student }) {
+
+export default function App() {
+  const [student, setStudent] = useState(null);
+  const [screen, setScreen] = useState("login"); // login | welcome | game
+
+  function handleLogin(s) {
+    setStudent(s);
+    setScreen("welcome");
+  }
+
+  function handleLogout() {
+    setStudent(null);
+    setScreen("login");
+  }
+
+  // not logged in yet
+  if (!student) {
+    return <Login onLogin={handleLogin} />;
+  }
+
+  // logged in, playing the game
+  if (screen === "game") {
+    return <GamePage onBack={() => setScreen("welcome")} />;
+  }
+
+  // logged in, on welcome screen
   return (
-    <div style={{ padding: 24, color: "white" }}>
-      <h1>Welcome, {student.name}!</h1>
-      <p>Your ID: {student.id}</p>
-      <p>Your Grade: {student.grade}</p>
-    </div>
-  );
-}
-
-export default function App() {
-  const [student, setStudent] = useState(null);
-  
-  return student ? (
-    <StudentHome student={student} />
-  ) : (
-    <Login setStudent={setStudent} />
-  );
-}*/
-
-export default function App() {
-  const [student, setStudent] = useState(null);
-
-  return student ? (
-    <Welcome student={student} onLogout={() => setStudent(null)} />
-  ) : (
-    <Login onLogin={setStudent} />
+    <Welcome
+      student={student}
+      onPlayGame={() => setScreen("game")}
+      onLogout={handleLogout}
+    />
   );
 }

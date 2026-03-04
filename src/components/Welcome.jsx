@@ -1,7 +1,7 @@
 import React from "react";
 import "./Welcome.css";
 
-const Welcome = ({ student, onLogout }) => {
+const Welcome = ({ student, onPlayGame, onLogout }) => {
   const name = student?.name;
 
   return (
@@ -10,7 +10,7 @@ const Welcome = ({ student, onLogout }) => {
             <p>Let's get started!</p>
 
       <div className="buttons">
-        <button>PLAY GAME</button>
+        <button onClick={onPlayGame}>PLAY GAME</button>
          <button>ASSIGNMENTS</button>
         <button onClick={onLogout}>LOGOUT</button>
       </div>
