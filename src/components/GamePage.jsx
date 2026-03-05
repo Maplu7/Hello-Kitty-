@@ -7,6 +7,22 @@ export default function GamePage({ onBack }) {
   const gameRef = useRef(null);
   const [toast, setToast] = useState(null);
 
+  function restartGame() {
+    // close toast
+    setToast(null);
+
+    // destroy old game
+    if (gameRef.current) {
+      gameRef.current.destroy(true);
+      gameRef.current = null;
+    }
+
+    // create a fresh game
+    if (containerRef.current) {
+      gameRef.current = createGame(containerRef.current);
+    }
+  }
+
   useEffect(() => {
     function onToast(e) {
       const detail = e.detail;
@@ -84,6 +100,20 @@ export default function GamePage({ onBack }) {
                 }}
               >
                 <button
+                  onClick={restartGame}
+                  style={{
+                    fontSize: 26,
+                    padding: "14px 20px",
+                    borderRadius: 16,
+                    border: "none",
+                    cursor: "pointer",
+                    fontFamily: "Fjalla One, sans-serif",
+                  }}
+                >
+                  Try Again
+                </button>
+
+                <button
                   onClick={onBack}
                   style={{
                     fontSize: 26,
@@ -94,7 +124,7 @@ export default function GamePage({ onBack }) {
                     fontFamily: "Fjalla One, sans-serif",
                   }}
                 >
-                  Back to Welcome
+                  Back to Home
                 </button>
               </div>
             )}

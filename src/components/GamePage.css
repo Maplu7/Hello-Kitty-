@@ -3,10 +3,9 @@
   position: relative;
   padding: 16px;
 
-  background-image: url("/backgroundLogin.png");
+  background-image: url("/backgroundLogin.png") no-repeat;
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
 }
 
 #game-container {

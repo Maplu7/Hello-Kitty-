@@ -197,31 +197,36 @@ this.numWrongGuesses.setVisible(false); // hides it during the game
 
     
 putInTrash(trash, trashCan) {
-  // Already counted while sitting on a can? don't count again.
-  if (trash._lockedOnCan) return;
+  // if this can is already solved, ignore
+  if (trashCan && trashCan._disabled) return;
 
-  // Lock immediately so overlap-per-frame can't spam
+  // stop overlap-per-frame spam
+  if (trash._lockedOnCan) return;
   trash._lockedOnCan = true;
 
-  // Unlock ONLY after the trash leaves ALL cans
+  // ✅ tint the TRASH SPRITE (not the container)
+  if (trash.trashMath) trash.trashMath.setTint(0xffff66);
+
+  // unlock only after leaving all cans
   const unlockWhenLeaving = () => {
-    const cans = [
-      this.trashCan1,
-      this.trashCan2,
-      this.trashCan3,
-      this.trashCan4,
-      this.trashCan5,
-    ].filter((c) => c && c.active);
+    const cans = [this.trashCan1, this.trashCan2, this.trashCan3, this.trashCan4, this.trashCan5]
+      .filter((c) => c && c.active);
 
     const stillOverAny = cans.some((c) => this.physics.overlap(trash, c));
 
     if (!stillOverAny) {
       trash._lockedOnCan = false;
+
+      // restore tint if not dragging
+      if (trash && trash.active && trash.trashMath && !trash._dragging) {
+        trash.trashMath.clearTint();
+      }
     } else {
       this.time.delayedCall(100, unlockWhenLeaving);
     }
   };
 
+  // ✅ CORRECT
   if (trash.correctAnswer === trashCan.answer) {
     this.correct?.destroy();
     this.correct = this.add.text(30, 200, "That is Correct!", {
@@ -229,15 +234,17 @@ putInTrash(trash, trashCan) {
       fill: "#ffffff",
     });
 
+    // ✅ turn the can gray + disable it (instead of destroying it)
+    if (trashCan.markCorrect) trashCan.markCorrect();
+
+    // remove trash
     trash.destroy();
-    trashCan.getAt(0).setTint(0x8c8c8c);
-    trashCan.destroy();
 
     this.numCorrect += 1;
     this.time.delayedCall(550, this.onCorrect, [], this);
 
     if (this.numCorrect === 5) {
-      // hide wrong counter at the end
+      // keep hidden during play; toast shows final number
       this.numWrongGuesses.setVisible(false);
       this.time.delayedCall(1000, this.onFinish, [], this);
     }
@@ -245,8 +252,12 @@ putInTrash(trash, trashCan) {
     return;
   }
 
+  // ✅ WRONG (count once)
   this.numWrong += 1;
+
+  // keep hidden, but update stored number for toast
   this.numWrongGuesses.setText("Num Wrong: " + this.numWrong);
+  this.numWrongGuesses.setVisible(false);
 
   this.wrongText?.destroy();
   this.wrongText = this.add.text(30, 200, "Try again!", {
@@ -255,7 +266,7 @@ putInTrash(trash, trashCan) {
   });
   this.time.delayedCall(550, () => this.wrongText?.destroy());
 
-  // allow counting again only after leaving cans
+  // allow another wrong count only after leaving cans
   unlockWhenLeaving();
 }
 
