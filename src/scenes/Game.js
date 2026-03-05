@@ -226,7 +226,7 @@ putInTrash(trash, trashCan) {
     }
   };
 
-  // ✅ CORRECT
+  // Check if the trash can is the correct one
   if (trash.correctAnswer === trashCan.answer) {
     this.correct?.destroy();
     this.correct = this.add.text(30, 200, "That is Correct!", {
@@ -234,11 +234,12 @@ putInTrash(trash, trashCan) {
       fill: "#ffffff",
     });
 
-    // ✅ turn the can gray + disable it (instead of destroying it)
+    // destorying trash, and trash can
     if (trashCan.markCorrect) trashCan.markCorrect();
 
     // remove trash
     trash.destroy();
+    trashCan.destroy();
 
     this.numCorrect += 1;
     this.time.delayedCall(550, this.onCorrect, [], this);
@@ -252,7 +253,7 @@ putInTrash(trash, trashCan) {
     return;
   }
 
-  // ✅ WRONG (count once)
+  // Wrong (count once)
   this.numWrong += 1;
 
   // keep hidden, but update stored number for toast
