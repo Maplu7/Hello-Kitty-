@@ -231,7 +231,9 @@ export class Game extends Phaser.Scene {
         new CustomEvent('toast', {
           detail: {
             type: "finish",
-            text:"Congratulations! You Finished!",
+            text:"Congratulations! You Finished!\n" +
+            "Correct Guesses: " + this.numCorrect + "\n" +
+            "Wrong Guesses: " + this.numWrong,
             correct: this.numCorrect,
             wrong: this.numWrong
           },
