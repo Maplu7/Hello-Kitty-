@@ -10,7 +10,7 @@
 }
 
 .welcome-bg {
-  background: url('src/assets/images/backgroundLogin8.png') no-repeat;
+  background: url('components/images/backgroundLogin8.png') no-repeat;
   background-size: cover;
   background-position: center;
 }

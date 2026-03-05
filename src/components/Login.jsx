@@ -26,7 +26,7 @@ const Login = ({ onLogin }) => {
     <div className="login-page">
       <div className="login-wrapper">
         <form onSubmit={handleSubmit}>
-          <h1>Login</h1>
+          <h1 className="login-title">Login</h1>
 
           <div className="input-box">
             <input

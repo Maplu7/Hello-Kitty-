@@ -190,26 +190,68 @@ export class Game extends Phaser.Scene {
     }
 
     
-    putInTrash(trash, trashCan)
-    {
-      if(trash.correctAnswer === trashCan.answer) {
-        this.correct = this.add.text(30, 200, 'That is Correct!', {fontSize: '80px', fill: '#ffffff'})
-        trash.destroy();
-        trashCan.getAt(0).setTint(0x8c8c8c);
-        trashCan.destroy();
-        this.numCorrect += 1;
-        this.removeCorrect = this.time.delayedCall(550, this.onCorrect, [], this);
-      }
+putInTrash(trash, trashCan) {
+  // Already counted while sitting on a can? don't count again.
+  if (trash._lockedOnCan) return;
 
-      else{
-        
-      }
+  // Lock immediately so overlap-per-frame can't spam
+  trash._lockedOnCan = true;
 
-      if(this.numCorrect == 5)
-          {
-              this.endGame = this.time.delayedCall(1000, this.onFinish, [], this);
-          }
+  // Unlock ONLY after the trash leaves ALL cans
+  const unlockWhenLeaving = () => {
+    const cans = [
+      this.trashCan1,
+      this.trashCan2,
+      this.trashCan3,
+      this.trashCan4,
+      this.trashCan5,
+    ].filter((c) => c && c.active);
+
+    const stillOverAny = cans.some((c) => this.physics.overlap(trash, c));
+
+    if (!stillOverAny) {
+      trash._lockedOnCan = false;
+    } else {
+      this.time.delayedCall(100, unlockWhenLeaving);
     }
+  };
+
+  if (trash.correctAnswer === trashCan.answer) {
+    this.correct?.destroy();
+    this.correct = this.add.text(30, 200, "That is Correct!", {
+      fontSize: "80px",
+      fill: "#ffffff",
+    });
+
+    trash.destroy();
+    trashCan.getAt(0).setTint(0x8c8c8c);
+    trashCan.destroy();
+
+    this.numCorrect += 1;
+    this.time.delayedCall(550, this.onCorrect, [], this);
+
+    if (this.numCorrect === 5) {
+      // hide wrong counter at the end
+      this.numWrongGuesses.setVisible(false);
+      this.time.delayedCall(1000, this.onFinish, [], this);
+    }
+
+    return;
+  }
+
+  this.numWrong += 1;
+  this.numWrongGuesses.setText("Num Wrong: " + this.numWrong);
+
+  this.wrongText?.destroy();
+  this.wrongText = this.add.text(30, 200, "Try again!", {
+    fontSize: "80px",
+    fill: "#ffffff",
+  });
+  this.time.delayedCall(550, () => this.wrongText?.destroy());
+
+  // allow counting again only after leaving cans
+  unlockWhenLeaving();
+}
 
     onCorrect()
     {

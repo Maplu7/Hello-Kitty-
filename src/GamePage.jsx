@@ -4,18 +4,14 @@ import { createGame } from "./createGame";
 export default function GamePage({ onBack }) {
   const containerRef = useRef(null);
   const gameRef = useRef(null);
+  const [toast, setToast] = useState(null); 
 
-  const [toast, setToast] = useState(null); // { type: "correct"|"wrong"|"finish", text: "..." }
-
-  // ✅ Listen for Phaser -> React toast events
   useEffect(() => {
     function onToast(e) {
       const detail = e.detail;
       setToast(detail);
 
       window.clearTimeout(window.__toastTimer);
-
-      // ✅ Only auto-hide small toasts (not finish)
       if (detail.type !== "finish") {
         window.__toastTimer = window.setTimeout(() => setToast(null), 1200);
       }
@@ -28,7 +24,6 @@ export default function GamePage({ onBack }) {
     };
   }, []);
 
-  // ✅ Create / destroy Phaser game
   useEffect(() => {
     if (containerRef.current && !gameRef.current) {
       gameRef.current = createGame(containerRef.current);
@@ -44,8 +39,7 @@ export default function GamePage({ onBack }) {
 
   return (
     <div style={{ minHeight: "100vh", padding: 16, position: "relative" }}>
-      {/* BIG kid-friendly back button */}
-      <button
+      {/*<button
         onClick={onBack}
         style={{
           fontSize: 30,
@@ -58,7 +52,7 @@ export default function GamePage({ onBack }) {
         }}
       >
         ← Back
-      </button>
+      </button> */}
 
       <div
         ref={containerRef}
@@ -66,7 +60,6 @@ export default function GamePage({ onBack }) {
         style={{ width: 800, height: 600, margin: "0 auto" }}
       />
 
-      {/* ✅ Toast / Finish overlay */}
       {toast && (
         <div
           style={{
@@ -99,9 +92,9 @@ export default function GamePage({ onBack }) {
           >
             {toast.text}
 
-            {toast.type === "finish" && (
+           {toast.type === "finish" && (
               <div style={{ marginTop: 18, display: "flex", gap: 12, justifyContent: "center" }}>
-                <button
+                {/*<button
                   onClick={() => setToast(null)}
                   style={{
                     fontSize: 26,
@@ -113,7 +106,7 @@ export default function GamePage({ onBack }) {
                   }}
                 >
                   Keep Playing
-                </button>
+                </button> */}
 
                 <button
                   onClick={onBack}
