@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Login from "./components/Login.jsx";
 import Welcome from "./components/Welcome.jsx";
-import GamePage from "./GamePage.jsx";
+import GamePage from "./components/GamePage.jsx";
 import "./App.css";
 
 export default function App() {

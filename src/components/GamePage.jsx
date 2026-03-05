@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { createGame } from "./createGame";
+import { createGame } from "../createGame";
+import "./GamePage.css";
 
 export default function GamePage({ onBack }) {
   const containerRef = useRef(null);
   const gameRef = useRef(null);
-  const [toast, setToast] = useState(null); 
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     function onToast(e) {
@@ -38,27 +39,8 @@ export default function GamePage({ onBack }) {
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", padding: 16, position: "relative" }}>
-      {/*<button
-        onClick={onBack}
-        style={{
-          fontSize: 30,
-          padding: "16px 22px",
-          borderRadius: 18,
-          border: "none",
-          cursor: "pointer",
-          fontFamily: "Fjalla One, sans-serif",
-          marginBottom: 12,
-        }}
-      >
-        ← Back
-      </button> */}
-
-      <div
-        ref={containerRef}
-        id="game-container"
-        style={{ width: 800, height: 600, margin: "0 auto" }}
-      />
+    <div className="gamePage">
+      <div ref={containerRef} id="game-container" />
 
       {toast && (
         <div
@@ -92,22 +74,15 @@ export default function GamePage({ onBack }) {
           >
             {toast.text}
 
-           {toast.type === "finish" && (
-              <div style={{ marginTop: 18, display: "flex", gap: 12, justifyContent: "center" }}>
-                {/*<button
-                  onClick={() => setToast(null)}
-                  style={{
-                    fontSize: 26,
-                    padding: "14px 20px",
-                    borderRadius: 16,
-                    border: "none",
-                    cursor: "pointer",
-                    fontFamily: "Fjalla One, sans-serif",
-                  }}
-                >
-                  Keep Playing
-                </button> */}
-
+            {toast.type === "finish" && (
+              <div
+                style={{
+                  marginTop: 18,
+                  display: "flex",
+                  gap: 12,
+                  justifyContent: "center",
+                }}
+              >
                 <button
                   onClick={onBack}
                   style={{

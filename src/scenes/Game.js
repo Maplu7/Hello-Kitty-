@@ -119,8 +119,14 @@ export class Game extends Phaser.Scene {
 
 
       this.numCorrect = 0; //Will keep track of number of right guesses
-      this.numWrong = 0; //Will keep track of number of wrong guesses
-      this.numWrongGuesses = this.add.text(20, 20, 'Num Wrong: 0', {fontSize: '40px', fill: '#ffffff'});
+      this.numWrong = 0;
+
+this.numWrongGuesses = this.add.text(20, 20, 'Num Wrong: 0', {
+  fontSize: '40px',
+  fill: '#ffffff'
+});
+
+this.numWrongGuesses.setVisible(false); // hides it during the game
 
       //March 3
       // Will trigger when a piece of trash is over a garbage can
